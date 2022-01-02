@@ -2,16 +2,16 @@
 Trimps automation not available in AutoTrimps, built from the ground up.
 
 
-#Internal Use only
+# Internal Use only
 taskVerse - the universe tab/button/whatever setting identifying the Taskimp settings universe
 
-#Toggle Only
+# Toggle Only
 master on/off  (main)
 zone to browser tab (zone2BTab)
 zone to messags (nextZone2Spam)
 iconify
 
-#Specials
+# Specials
 mazRetry (toggle, wait text)
 empower (toggle, 3 pulldowns - Poison, Wind, Ice)
 BW to messages (nextBW2Spam, textbox/BW Zone)
@@ -22,7 +22,7 @@ Auto Formation Dance (radio button, textbox/offZone)early (untested and simple),
 Max Build Buildings (toggle)
 
 
-#(Works In Progress)
+# (Works In Progress)
 Heirloom Evaluator (toggle) Big descriptiom
   Shield/Staff (pulldown/minimum keep rarity)
   Core (pulldown/minimum keep rarity)
