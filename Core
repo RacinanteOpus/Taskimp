@@ -537,6 +537,736 @@
         function () {
           //document.getElementById(this.elemIds.active) = this.active[0];
         }
+// ==UserScript==
+// @name         Taskimp
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       JPS, RacinanteOpus  (zininzinin, spindrjr, Ishkaru, genBTC, Zeker0)
+// @match        https://trimps.github.io/
+// @match        http://trimps.github.io/
+// @include      *trimps.github.io*
+// @include      *kongregate.com/games/GreenSatellite/trimps
+// @include      *trimps.github.live*
+// @connect      *trimps.github.live*
+// @connect      self
+// @icon         https://www.google.com/s2/favicons?domain=netlify.app
+// @grant        none
+// ==/UserScript==
+
+(function() {
+  'use strict';
+
+  // Your code here...
+  //holidayObj.holidays.Snowy.check = 
+  //  function(day, month) {
+  //    if (!holidayObj.holidays.Eggy.check(day, month) 
+  //        && !holidayObj.holidays.Pumpkimp.check(day, month)) return true;
+  //  }
+  //holidayObj.checkAll();
+  holidayObj.holidays.Snowy.check = function(day, month){ return true;}
+  holidayObj.holiday = "Snowy";
+  holidayObj.checkActive("Snowy");
+
+  var MODULES = {'fightinfo' : {}};
+
+  var TK = {'main':{'displayed':false},
+            'jobs':{'options':{}, 'active':{}, 'updates':{}}};
+  TK.displayed = false;
+  TK.jobs.options = {
+    'zone2BTab': {
+      'name': 'zone2BTab',
+      'active': [true, true],
+      'type': 'zone',
+      'saveMe': ['active'],
+      'elemIds': {'active':'zone2BTab'},
+      'desc': {'active':"Taskimp promises to make each World Zone a better place by announcing the current Zone in the browser's tab... if the browser cooperates."
+              },
+      'post':
+        function () {
+          //from AT setTitle();
+          document.title='('+game.global.world+') Trimps '+document.getElementById('versionNumber').innerHTML;
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'set':
+        function () {
+          //document.setElementById(this.elemIds.active) = this.active[0];
+        }
+    },
+    'nextZoneSpam': {
+      'name': 'nextZoneSpam',
+      'active': [true, true],
+      'type': 'zone',
+      'saveMe': ['active'],
+      'elemIds': {'active':''},
+      'desc': {'active':"Taskimp helpfully adds a World Zone timestamp to the message window so you can feel your zone speeds... or lack there of.",
+               'zone':'At what Zone would you like Taskimp to start spam..., I mean sharing your progress? Default is zone 1.'
+              },
+      'post':  // or 'call'
+        function () {
+          //Trimps function;
+          message('Starting Zone '+game.global.world+" Run Time "+updatePortalTimer(1), "Loot", "time");
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'set':
+        function () {
+          //document.setElementById(this.elemIds.active) = this.active[0];
+        }
+    },
+    'iconify': {
+      'name': 'iconify',
+      'active': [true, true],
+      'type': 'grid',
+      'saveMe': ['active'],
+      'elemIds': {'active':''},
+      'desc': {'active': "Taskimp *REALLY* wants to spruce up you DULL AND DRAB World and Maps with NEW colorful Icons and cool Mouseovers! Oh and they might even tell you something useful like in rumored bygone days, but Taskimp doesn't think that's what important here.",
+               'zone':"At what Zone do you think Taskimp should start his prettifying work? He *REALLY* thinks he should start from Zone 1! This decor is soooo 2015!"
+              },
+      'post':
+        function () {
+          MODULES.fightinfo.Update();
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'set':
+        function () {
+          //document.setElementById(this.elemIds.active) = this.active[0];
+        }
+    },
+    'mazRetry': {
+      'name': 'mazRetry',
+      'active': [true, true],
+      'type': 'mapAtZone',
+      'wait': 15,
+      'saveMe': ['active', 'wait', 'mLoop'],
+      'elemIds': {'active':'', 'wait':''},
+      'desc': {'active': "Taskimp feels a great disturbance whenever Map At Zone allows insuffient fragments come between you and that much desired, overpriced map you've been drooling over and will happily (mostly) remedy the situation once enough fragments SLOWLY, PAINFULLY accrue.",
+               'wait':"How many second do you want Taskimp to wait between fragment accounting sessions? Don't ask too often, Taskimp can get cranky from frequent fragment exposure! In fact, Taskimp recommends 3600 seconds, but, well, that's Taskimp for ya... (Default is 15 sec)."
+              },
+      'mLoop': 0,
+      'messages': {'icon': 'pawn', 'type': 'Story',
+                   'text':
+                     ["My, my, not enough fragments... yet. Don't worry Taskimp has got this!",
+                      "Oops, another fragment shortage?! Well good thing Taskimp is here to save the day!",
+                      "What!? Fragments again? Taskimp is spending a lot of timed watching fragments grow...",
+                      "So, is this fragment intervention thing going to be a habit with you?",
+                      "Um, fragments are starting to task Taskimp!",
+                      "Seriously, Taskimp has about had it with these fragment shortages!",
+                      "Really! Some help here! Taskimp has better things to do than count fragments!",
+                      "(Le sigh) Maybe you should consider adding more explorers, a fragment heavy Heirloom, or being a *smidge* less aggressive with maps? Just a thought...",
+                      "Grrrrrrrr",
+                      "Great.... Here we go again... You know what?  I'm just gonna erase my memory."]
+                  },
+      'post':
+        function () {
+          //messages here
+          var iBuy = setInterval(function () {
+            if (!game.global.preMapsActive) {
+              clearInterval(iBuy);
+              return;
+            }
+            if (updateMapCost(true) < game.resources.fragments.owned) {
+              this.loop++;
+              //checkMapAtZoneWorld(true);
+              var mapStatus = buyMap();
+              if (mapStatus == 1){
+                if (game.global.currentMapId) recycleMap();
+                selectMap(game.global.mapsOwnedArray[game.global.mapsOwnedArray.length - 1].id);
+                runMap();
+                clearInterval(iBuy);
+              }
+            }
+          }, this.wait * 1000); // 60000ms = 1 min, 1000ms = 1 sec
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          //get and parse the options and zones string from html
+          var verse = document.getElementById('taskVerse') - 1;
+          var wait = document.getElementById(this.elemIds.wait[verse]);
+          if (isNaN(+wait)) {
+            // htmlEncode() another Trimp function
+            alert("Taskimp is wondering what question " + htmlEncode(wait) + "answers?");
+            return;
+          }
+          this.wait = wait;
+        },
+      'set':
+        function () {
+          //document.setElementById(this.elemIds.active) = this.active[0];
+          //document.setElementById(this.elemIds.wait) = this.wait;
+        },
+      'reset':
+        function () {
+          this.mLoop = 0;
+        }
+    },
+    'newBWSpam': {
+      'name': 'newBWSpam',
+      'active': [true, null],
+      'type': 'bw',
+      'zoneBW': 620,
+      'mapCounter': 0,
+      'text2':'',
+      'saveMe': ['active', 'zoneBW', 'mapCounter', 'text2'],
+      'elemIds': {'active':'', 'zoneBW':''},
+      'desc': {'active':"While Taskimp is being helpful, he'll post a Bionic Wonderland timestamp to the message window, so you can see how many days you latest BW map is taking...",
+               'zoneBW':"Taskimp is all set to begin his epic, uninterupted Lord of the Rings, extended edition, marathon, if you would just pick which Bionic Wonderland Taskimp should time. Hurry up his popcorn and beverage is waiting!"
+               //'zoneBW':"For which Bionic Wonderland should Taskimp hit the stem on his stop watch then sit back, grab a bowl of popcorn, and begin his, sure to be uninterupted, epic Lord of the Rings, extended edition, marathon?"
+              },
+      'post':
+        function () {
+          // runMap -- getCurrentMapObject
+          if (!game.global.mapsActive) return;
+          var mapObj = getCurrentMapObject();
+          if (mapObj.location != 'Bionic' || mapObj.level <= this.zoneBW) return;
+          if (this.mapCounter != game.global.mapRunCounter) {
+            this.mapCounter = game.global.mapRunCounter;
+            //message mapObj.name mapObj.level
+            var text1 = 'Starting BW ' + mapObj.level + ' Map ' + (this.mapCounter + 1)
+                         + ' Portal Time ' + updatePortalTimer(1);
+            this.mapStart = getGameTime();
+            message(text1 + this.text2, "Loot", "globe");
+            this.text2 = '';
+          }
+          // This part refuses to work. Try again later!
+          //if (game.global.lastClearedMapCell == 98)
+          //  this.text2 = ' (Map Time ' + formatSecondsAsClock((getGameTime() - game.global.mapStarted) / 1000) + ')';
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          var zone = document.getElementById(this.elemIds.zoneBW);
+          if (isNaN(+zone)) {
+            alert("Taskimp has checked with the Robotrimp, neither of them understand " 
+                  + htmlEncode(zone) + ".");
+            return;
+          }
+          this.zone = zone;
+        },
+      'set':
+        function () {
+          for (var i=0; i<this.active.length; i++) {
+            if (this.active[i] != null) var temp=true;
+              //document.setElementById(this.elemIds.active) = this.active[i];
+          }
+        },
+      'reset':
+        function () {
+          this.mapCounter = 0;
+        }
+    },
+    'maxBuild': {
+      'name': 'maxBuild',
+      'active': [true, true],
+      'type': 'buy',
+      'saveMe': ['active'],
+      'elemIds': {'active':['', '']},
+      'desc': {'active':"Trimps are invading Taskimp's office and are building sandcastles in his perfectly manicured zen garden to live in. You find him more than willing to speed up AutoStructure by queueing maxed building (instead of Max 10)... anything to get these freeloading Trimps out of his sand!",
+              '???': "He'll even throwing in the Antennas and force affordable Meteorologist first (I know, don't ask)."},
+      'post':
+        function () {
+          // Trimp references buyAutoStructures calculateMaxAfford
+          // Maybe startQueue
+          // if autoBuy true!!!!!!
+          if (this.active[game.global.universe - 1] === false 
+              || game.global.buildingsQueue.length >= 11) return;
+          //If autoStructure is not enabled, do not buy
+	        var setting = getAutoStructureSetting();
+          if (!setting.enabled) return;
+	        var order = ["Antenna", "Tribute", "Smithy", "Nursery", "Laboratory",
+                       "Warpstation", "Collector", "Gateway", "Resort", "Hotel",
+                       "Mansion", "House", "Hut", "Gym"
+                      ];
+          var buy = 0, buyMax = 0, purchased = 0, maxBuild = 0;
+          //console.log(setting);
+          for (let item of order) {
+            //console.log(item);
+            if (!setting.hasOwnProperty(item) || !setting[item].enabled
+                || game.buildings[item].locked) continue;
+            if (item == 'Nursery' && setting.hasOwnProperty('NurseryZones')) 
+              if (setting.NurseryZones > game.global.world) continue;
+
+            // vvvv Trimps code
+            purchased = game.buildings[item].purchased;
+            if (item == "Nursery" && game.global.world >= 230)
+              purchased -= game.stats.decayedNurseries.value;
+            buyMax = setting[item].buyMax;
+            //if (item == 'Tribute') console.log(item + " " + maxBuild);
+            if (typeof buyMax !== 'undefined' && buyMax > 0){
+              if (purchased >= buyMax) continue;
+              maxBuild = buyMax - purchased;
+            }
+            //if (item == 'Tribute') console.log(item + " " + maxBuild);
+            // ^^^^ Trimps code --- Psuedo Trimp code vvvv
+            buy = calculateMaxAfford(game.buildings[item], true, false, false, setting[item].buyMax, parseFloat(setting[item].value) / 100);
+            //if (item == 'Tribute') console.log(item + " " + buy + " " + maxBuild);
+            if (buy > maxBuild && maxBuild != 0) buy = maxBuild;
+            //if (item == 'Tribute') console.log(item + " " + buy + " " + maxBuild);
+            if (buy >= 10) buyBuilding(item, true, false, buy);
+            if (game.global.buildingsQueue.length >= 11) return;
+            // Psuedo Trimp code ^^^^
+          }
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'set':
+        function () {
+          for (var i=0; i<this.active.length; i++) {
+            if (this.active[i] != null) var temp = true;
+              //document.setElementById(this.elemIds.active) = this.active[i];
+          }
+        }
+    },
+    'buyFirst': {
+      'name': 'buyFirst',
+      'active': [true, true],
+      'type': 'buy',
+      'saveMe': ['active'],
+      'elemIds': {'active':['', '']},
+      'desc': {'active':"Taskimp will 'tweak' the purchase priority from Equipment levels, Prestiges, and buildings to Prestiges, Equipment levels, and buildings, plus adding jobs last. Max Buy will happen first.",
+              '???': "He'll even throwing in the Antennas and force affordable Meteorologist first (I know, don't ask)."},
+      'post':
+        function () {
+          // Trimp references buyAutoStructures calculateMaxAfford
+          // Maybe startQueue
+          // if autoBuy true!!!!!!
+          if (this.active[game.global.universe - 1] === false) return;
+          autoUpgrades(); // Swapped first 2 to this order
+          buyAutoEquip(); // Prefer Prestiges over Levels
+          if (!TK.jobs.options.maxBuild.active[game.global.universe - 1]) buyAutoStructures();
+          buyAutoJobs(); // YA Added this
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'set':
+        function () {
+          for (var i=0; i<this.active.length; i++) {
+            if (this.active[i] != null) var temp = true;
+              //document.setElementById(this.elemIds.active) = this.active[i];
+          }
+        }
+    },
+    'voidCntSpam': {
+      'name': 'voidCntSpam',
+      'active': [true, null],
+      'type': 'grid',
+      'mapCounter': 0,
+      'done': false,
+      'saveMe': ['active', 'mapCounter', 'done'],
+      'elemIds': {'active':''},
+      'desc': {'active':"Taskimp just had a miraculous MLT, so he is feeling unusually effusive and solicitous. He is willing to post how many Void maps you started with when you run them."
+              },
+      'post':
+        function () {
+          // runMap -- getCurrentMapObject
+          if (!game.global.mapsActive || this.active[game.global.universe - 1] === false) return;
+          var mapObj = getCurrentMapObject();
+          if (mapObj.location != 'Void') return;
+          var voidCnt = game.global.totalVoidMaps
+          if (this.mapCounter != voidCnt) {
+            this.mapCounter = voidCnt;
+            if (voidCnt != 0 && !this.done) {
+              message('As a basic point of bookkeeping, you have ' + voidCnt + ' Void Maps to exploit!', 'Loot', 'pawn');
+              this.done = true;
+            } else if (voidCnt == 0) this.done = false;
+          }
+          // This part refuses to work. Try again later!
+          //if (game.global.lastClearedMapCell == 98)
+          //  this.text2 = ' (Map Time ' + formatSecondsAsClock((getGameTime() - game.global.mapStarted) / 1000) + ')';
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'set':
+        function () {
+          for (var i=0; i<this.active.length; i++) {
+            if (this.active[i] != null) var temp=true;
+              //document.setElementById(this.elemIds.active) = this.active[i];
+          }
+        },
+      'reset':
+        function () {
+          this.mapCounter = 0;
+        }
+    },
+    'empower': {
+      'name': 'empower',
+      'active': [true, null],
+      'type': 'zone',
+      'options': {'Poison': ['None', 'Transfer', 'Upgrade', 'Convert to Wind', 'Convert to Ice'],
+                  'Wind': ['None', 'Transfer', 'Upgrade', 'Convert to Poison', 'Convert to Ice'],
+                  'Ice': ['None', 'Transfer', 'Upgrade', 'Convert to Poison', 'Convert to Wind']},
+      'picks':  {'Poison': 'Upgrade', 'Wind': 'Upgrade', 'Ice': 'Convert to Wind'},
+      'saveMe': ['active', 'picks'],
+      'elemIds': {'active':'empToggle', 'Poison': 'Poison', 'Wind': 'wind', 'Ice': 'ice'},
+      'desc': {'active': "Taskimp stands ready to take on Nature Management! (He's always wanted to be in management!)"
+              },
+      'post':
+        function () {
+          if (game.global.world % 5 == 2 && game.global.world > 246 &&
+              this.active[game.global.universe - 1] === true) {
+            for (let [key, option] of Object.entries(TK.jobs.options.empower.picks)) {
+              switch (option) {
+                case 'None': break;
+                case 'Transfer': naturePurchaseTK('stackTransfer', key); break;
+                case 'Upgrade': naturePurchaseTK('upgrade', key); break;
+                default:
+                  while (game.empowerments[key].tokens > 10)
+                    naturePurchaseTK('convert', key, option.slice(11));
+              }
+            }
+          }
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.picks.poison = document.getElementById(this.elemIds.poison[verse]);
+          this.picks.wind = document.getElementById(this.elemIds.wind[verse]);
+          this.picks.ice = document.getElementById(this.elemIds.ice[verse]);
+        },
+      'set':
+        function () {
+          //document.getElementById(this.elemIds.active) = this.active[0];
+        }
+    },
+    'windy': {
+      'name': 'windy',
+      'active': [false, null],
+      'type': 'zone',
+      'zone': ['1, 999'],
+      'zoneList': [1, 999],
+      'done':false,
+      'saveMe': ['active', 'zone', 'zoneList', 'done'],
+      'elemIds': {'active':['windToggle',], 'zone':['windZone',]},
+      'desc': {'active':"Wouldn't it be nice if choosing the Wind Enhancement also selected the Wind Formation? Taskimp totally agrees! ...it would mean one less task for him..."},
+      'post':
+        function () { 
+          if (game.global.uberNature != 'Wind') return;
+          if (game.global.world == 1) this.done = false;
+          if (this.zoneList[game.global.universe - 1] > game.global.world
+              || this.done) return;
+          setFormation('5');
+          this.done = true;
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (isNaN(+document.getElementById(this.elemIds.zone[verse]))) {
+            alert("Taskimp is sure you have the schematics upside down as "
+                  + htmlEncode(wait) 
+                  + " is not a meaningful instruction in this context.");
+            return;
+          }
+          this.zone[verse] = document.getElementById(this.elemIds.zone[verse]);
+          this.zoneList[verse] = document.getElementById(this.elemIds.zone[verse]);
+        },
+      'reset':
+        function () {
+          this.done = false;
+        }
+    },
+    'autoEquipToggle': {
+      'name': 'autoEquipToggle',
+      'active': [true, true],
+      'type': 'zone',
+      'zone': ['1-600', '1-185'],
+      //'zoneList': [[[1, false], [600, true]], [[1, false], [184, true]]],
+      'zoneList': [[[1, 600]], [[1, 100]]],
+      'saveMe': ['active', 'zone', 'zoneList'],
+      'elemIds': {'active':['autoEquipToggleU1', ''], 'zone': ['autoEquipZoneU1', '']},
+      'desc': {'active': "Taskimp keeps looking at AutoEquiment and thinking 'way overworked'. He liked to do something about that.",
+               'zone': "So you too are thinking that AutoEquiment needs a little vae-kae. The Bahamas sound nice! Just let Taskimp know during what Zones you think AutoEquipment could 'get away' and take that much needed time OFF. Example: 1-125, 150. Wonder if there is a high interest metal bank where Taskimp could invest the accruing funds?"
+              },
+      'post':
+        function () {
+          var verse = game.global.universe - 1;
+          if (!this.active[verse]) return;
+          var zones = this.zoneList[verse];
+          var equip = true;
+          var autoEquipEnabled = (verse == 0) 
+                ? game.global.autoEquipSetting.enabled 
+                : game.global.autoEquipSettingU2.enabled;
+          for (var i=0; i < zones.length; i++) {
+            if (zones[i][0] <= game.global.world 
+                && game.global.world <= zones[i][1]) equip = false;
+          }
+          if (!equip && autoEquipEnabled === true) {
+            toggleAutoEquip(); //Trimp Function
+            return;
+          }
+          if (equip && autoEquipEnabled === false) {
+            toggleAutoEquip(); //Trimp Function
+          }
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          //  !!!!!! NOT DONE !!!!!! NEEDS LOOP !!!!!!
+          //get and parse the options and zones string from html
+          return;
+          var verse = document.getElementById('taskVerse') - 1,
+              zones = pairedStr2NumList(document.getElementById(this.elemIds.zone[verse]));
+          if (zones[0] === false) {
+            alert("Taskimp *is* particularly awesome, if he does say so himself, "
+                  + "but he hasn't yet mastered the skill of mind reading. "
+                  + "What exactly do you mean by zone " + htmlEncode(zones[1]) + "?");
+            return;
+          }
+          this.zone[verse] = document.getElementById(this.elemIds.zone[verse]);
+          this.zoneList[verse] = zones;
+        },
+      'set':
+        function () {
+          //document.setElementById(this.elemIds.active) = this.active[0];
+        }
+    },
+    'playerMapJob': {
+      'name': 'playerMapJob',
+      'active': [true, true],
+      'type': 'grid',
+      'restore' : '',
+      'saveMe' : ('active', 'restore'),
+      'desc': {'active':"Whenever the player is not working the same resource as the map farm, "
+               + "Taskimp feels a sensation not unlike that caused by nails on a chalkboard. "
+               + "He has volunteered to realign the Player's resource gathering to match "
+               + "the map's resource for the duration of the farming session. He'll even "
+               + "restore it to the premap setting when the current zone is complete."},
+      'post':
+        function () {
+          //if (game.global.mapExtraBonus == '') return;
+          if (game.global.mapsActive) {
+            if (this.restore != '') return;
+            this.restore = game.global.playerGathering;
+            switch (game.global.mapExtraBonus.slice(1, 2)) {
+              case 'm' : setGather('metal');
+              case 'f' : setGather('food');
+              case 'w' : setGather('wood');
+            }
+          } else {
+            if (this.restore == '') return;
+            setGather(this.restore);
+            this.restore = '';
+          }
+        },
+      'get':
+        function () {
+          //
+        },
+      'set':
+        function () {
+          //
+        }
+    },
+    'playerJob': {
+      'name': 'playerJob',
+      'active': [true, true],
+      'type': 'zone',
+      'zone': ['1, 250', '176'],
+      'gather': ['f, m', 'm'],
+      'zoneList': [[[1, 249],[250, 9999]], [[170, 9999]]],
+      'saveMe': ['active', 'zone', 'gather', 'zoneList'],
+      'elemIds': {'active':['', ''], 'zone':['', ''], 'gather':['', '']},
+      'options': {'f':'food', 'm':'metal', 'w':'wood', 't':'trimps', 's':'science'},
+      'desc': {'active':"Taskimp magnanimously grants thee the opportunity to alter what thou, the player, doth gathers on entering a zone or zones of thy choosing. Say not thee nay to his offer for his magnanimity occurs not often.",
+      //'desc': {'active':"Taskimp magnanimously offers you the opportunity to change what you, the player, gather at starting at a zone of your choosing. Take him up on it, he's not magnanimous very often.",
+               'zone':"At what zone(s) doest thoust wish to alter thy employment? Provide thy petition in a comma delimited form. Example: 125, 150, 200",
+               'gather':"And pray, what form of employment shalt thou pursue? Shall thou seek after m(etal), f(ood), w(ood), s(cience), or t(rimps)? In length, thy list must mirror thy zones!  Example: f, m, f"
+              },
+      'post':
+        function () {
+          var zones = this.zoneList[game.global.universe - 1];
+          var gather = this.gather[game.global.universe - 1].split(',');
+          for (var i=0; i < zones.length; i++) {
+            if (zones[i][0] <= game.global.world && game.global.world <= zones[i][1]) {
+              //game.global.playerGathering = this.gathering[i];
+              setGather(this.options[gather[i].trim().toLowerCase()]); // Trimps function
+              return;
+            }
+          }
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          //get and parse the options and zones string from html
+          var verse = document.getElementById('taskVerse') - 1,
+              zones = str2PairedNumList(document.getElementById(this.elemIds.zone[verse])),
+              gather = document.getElementById(this.elemIds.gather[verse]).split(',');
+          if (zones[0] === false) {
+            alert("Nay, nay! Taskimp seeks numbers by which to effect the Player's employ. "
+                  + htmlEncode(zones[i]) + " shall not do!");
+            return;
+          }
+          if (zones.length != gather.length) {
+            alert("In his great wisdom, Taskimp requires Zones and Player Employment be of "
+                  + "the same count ere he approve thee thy work.");
+            return;
+          }
+          for (var i=0; i<gather.length; i++) {
+            if (this.options.indexOf(gather[i].toLowerCase()) > -1) {
+              alert("Ah yes, applying for court jester I see. Verily "
+                    + htmlEncode(gather[i])
+                    + " doth not represent a form of employ open to thee.");
+              return;
+            }
+          }
+          this.zone[verse] = document.getElementById(this.elemIds.zone[verse]);
+          this.zoneList[verse] = zones;
+          this.gather[verse] = document.getElementById(this.elemIds.gather[verse]);
+        },
+      'set':
+        function () {
+          //document.setElementById(this.elemIds.active[0]) = this.active[0];
+          //document.setElementById(this.elemIds.active[1]) = this.active[1];
+          //document.setElementById(this.elemIds.zone[0]) = this.zone[0];
+          //document.setElementById(this.elemIds.zone[1]) = this.zone[1];
+          //document.setElementById(this.elemIds.gather[0]) = this.gather[0];
+          //document.setElementById(this.elemIds.gather[1]) = this.gather[1];
+        }
+    },
+    'stanceDance': {
+      'name': 'stanceDance',
+      'active': [true, null],
+      'type': 'zone',
+      'zone': 800,
+      'unlockZone': 60,
+      'saveMe': ['active', 'zone'],
+      'elemIds': {'active': ['formDanceToggle', ], 'zone': ['formDanceZone', ]},
+      'desc': {'active': "Strangly Taskimp has started a one imp Conga line. Mayhaps he misunderstood the meaning of Formation dancing? Maybe someone should expalin to him that he will be changing your Formation to suit your Zone's Nature (Wind or Scryer in Wind, Donmination in Poison and Ice).",
+              'zone': "When would you like Taskimp to stop Formation dancing (Formations aren't available til Zone 60)"
+              },
+      'post':
+        function () {
+          // Need to acount for Challenges
+          var world = game.global.world;
+          if (this.active[game.global.universe - 1] !== true || world >= this.zone) return;
+          //if (world % 5 == 1 && game.global.world >= this.zone
+          if (game.global.preMapsActive || getHighestLevelCleared() < 60) return;
+          //console.log('Past 2nd return');
+          // if Maps
+          if (game.global.mapsActive) {
+            var mapObj = getCurrentMapObject();
+            //console.log('map ' + mapObj);
+            //console.log('MapsActive Test' + game.global.mapsActive);
+            if (world >= getNatureStartZone() || game.global.uberNature === 'Wind') {
+              //If Voids or Wind Zone Farming
+              //console.log('');
+              if (mapObj.location.toLowerCase() == "void" || getEmpowerment() == 'Wind') {
+                (game.global.uberNature === 'Wind') ? setFormation('5') : setFormation('4');
+                return;
+              }
+            }
+            //If Maps no Wind
+            //console.log();
+            setFormation('2');
+            return;
+          };
+          // If Liquification Zone
+          if (checkIfLiquidZone()) {
+            (world >= getNatureStartZone() || game.global.uberNature === 'Wind')
+              ? setFormation('5') : setFormation('4');
+              return;
+          }
+          // If World Zone and Dark Essence is available
+          if (countPurchasedTalents() < 40 && getHighestLevelCleared() >= 180
+              && countRemainingEssenceDrops() > 0) {
+            //console.log('dark essence');
+            (world >= getNatureStartZone() || game.global.uberNature === 'Wind')
+              ? setFormation('5') : setFormation('4');
+              return;
+          };
+          // If World Zone and no Dark Essence to gather
+          //(game.global.world % 5 == 2 && game.global.world > 246
+          if (getHighestLevelCleared() >= getNatureStartZone()) {
+            (game.global.uberNature === 'Wind')
+              ? setFormation('5') : setFormation('4');
+              return;
+          }
+          //console.log();
+          if (game.upgrades.Dominance.done) setFormation('2'); else setFormation('0');
+          return;
+        },
+      'toggle':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          this.active[verse] = !this.active[verse];
+        },
+      'get':
+        function () {
+          var verse = document.getElementById('taskVerse') - 1;
+          if (verse === null) return;
+          var zone = document.getElementById(this.elemIds.zone);
+          if (isNaN(+zone)) {
+            alert(" " + htmlEncode(zone) + ".");
+            return;
+          }
+          this.zone = zone;
+        },
+      'set':
+        function () {
+          //document.getElementById(this.elemIds.active) = this.active[0];
+        }
     },
     'refreshTKJobs': {
       'name': 'refreshTKJobs',
@@ -547,44 +1277,26 @@
         function () {
           refreshTKJobs();
         }
+    },
+    'resetVars': {
+      'name': 'resetVars',
+      'active': [true, true],
+      'type': 'preZone1',
+      'desc': {'active':"Always active, internal only, resets tracking varibles on load and after portals"},
+      'post':
+        function () {
+          for (let [key, option] of Object.entries(TK.jobs.options)) {
+            if (option.hasOwnProperty("reset")) option.reset();
+          }
+        }
     }
   }
   refreshTKJobs();
 
-  // Deprecated
-  function validNum (testSubject, alert1, alert2) {
-    if (isNaN(+testSubject)) {
-      alert(alert1 + " " + wait + " " + alert2);
-      return false
-    }
-    return true;
-  }
-
-  // Deprecated
-  function validNumStr (parsee, alert1, alert2) {
-    var rangedList = parseRangeList(parsee.split(',')),
-        parsedList = [];
-    for (var i=0; i<rangedList.length; i++) {
-      if (!validNum (rangedList[i], alert1, alert2)) return false;
-      parsedList.push(+value);
-    }
-    return parsedList;
-  }
-
-  // Deprecated
-  function validNumRangeStr (parsee, alert1, alert2) {
-    var rangedList = parsee.split(','),
-        value, parsedList = [], pairs = [];
-    //console.log(rangedList);
-    for (var i=0; i<rangedList.length; i++) {
-      for (var j=0; j<rangedList[i].split('-').length; j++) {
-        value = rangedList[i].split('-')[j];
-        if (!validNum (value, alert1, alert2)) return false;
-        pairs.push(+value);
-      }
-      parsedList.push(pairs);
-    }
-    return parsedList;
+  function getHeirlooms(location) {
+    return (location.includes('Equipped'))
+      ? [game.global[location]]
+      :  game.global[location];
   }
   
   // takes "1, 600, 900" and converts it to 
@@ -640,7 +1352,9 @@
         //'mapChamber': {'active': true, 'eList': []},
         'preZone1': {'active': true, 'eList': ['refreshTKJobs']},
         //'preportal': {'active': true, 'eList': []},
-        'cell': {'active': true, 'eList': []}
+        //'precell': {'active': true, 'eList': [],
+        'cell': {'active': true, 'eList': []},
+        'buy': {'active': true, 'eList': []}
       }
   }
 
@@ -729,7 +1443,7 @@
         (imp.toLowerCase().indexOf("turk") > -1) ? "Turk":
         (imp.toLowerCase().indexOf("hulk") > -1) ? "Hulk" :
         (imp.toLowerCase().indexOf("megaskele") > -1) ? "MSkele" :
-        (imp.toLowerCase().indexOf("skele") > -1) ? "Skele":
+        (imp.toLowerCase().indexOf("skele") > -1) ? "Skele" :
         (imp.toLowerCase().indexOf("presi") > -1) ? "Pres" :
         (imp.toLowerCase().indexOf("voidsnimp") > -1) ? "VSnimp" :
         (isImpFast(imp)) ? "Fast" :
@@ -740,8 +1454,8 @@
   (function(M)
   {
     M.fightinfo = {};
-    M.fightinfo.$worldGrid = document.getElementById('grid');
-    M.fightinfo.$mapGrid = document.getElementById('mapGrid');
+    //M.fightinfo.$worldGrid = document.getElementById('grid');
+    //M.fightinfo.$mapGrid = document.getElementById('mapGrid');
 
     function checkMap (cell) {
           let elem = document.getElementById(cell);
@@ -787,7 +1501,7 @@
       myElement.classList.add((glyphData[0] > "h") ? "icomoon" : "glyphicon");
       myElement.classList.add(glyphData[0]);
       myElement.style.color = glyphData[1];
-      myElement.style.fontSize = glyphData[2];
+      //myElement.style.fontSize = glyphData[2];
       document.getElementById(cell).appendChild(myElement);
     }
 
@@ -798,13 +1512,17 @@
       var $rows = {};
 
       // Check if we should update world or map info
+      var $worldGrid = document.getElementById('grid'),
+          $mapGrid = document.getElementById('mapGrid');
+      //console.log('$mapGrid', $mapGrid);
+      if (game.global.mapsActive && $mapGrid.children.length < 1) return;
       if(game.global.mapsActive) {
         cells = game.global.mapGridArray;
-        $rows = Array.prototype.slice.call(M.fightinfo.$mapGrid.children);
+        $rows = Array.prototype.slice.call($mapGrid.children);
       }
       else {
         cells = game.global.gridArray;
-        $rows = Array.prototype.slice.call(M.fightinfo.$worldGrid.children);
+        $rows = Array.prototype.slice.call($worldGrid.children);
       }
 
       // Rows are in inverse order somewhy
@@ -848,10 +1566,11 @@
       apply(target, thisArg, args) {
         // Do these things before the trapped function runs
         //console.log("Before invocation");
-        f(...args);
+        f(...args); // Potal time
         // Do these things after the trapped function runs
         //console.log("After invocation");
-        doTKJobs("preZone1");
+        setTimeout(doTKJobs("preZone1"), 15000);
+        //doTKJobs("preZone1");
         doTKJobs("zone");
       }
     });
@@ -859,15 +1578,11 @@
 
   resetGame = portalTrap(resetGame);
 
-  // if a new world zone is started Taskimp haz gotz work to dooz
+  // if a new World Zone is started
   function newWorldTrap(f) {
     return new Proxy(f, {
       apply(target, thisArg, args) {
-        // Do these things before the trapped function runs
-        //console.log("Before invocation");
-        f(...args);
-        // Do these things after the trapped function runs
-        //console.log("After invocation");
+        f(...args); // NextWorld being run
         doTKJobs("zone");
       }
     });
@@ -875,53 +1590,42 @@
 
   nextWorld = newWorldTrap(nextWorld);
 
-  // if a new grid is drawn Taskimp haz gotz work to dooz
+  // if a new grid is drawn
   function newGridTrap(f) {
     return new Proxy(f, {
       apply(target, thisArg, args) {
-        // Do these things before the trapped function runs
-        //console.log("Before invocation");
-        if (game.global.world == 1) doTKJobs("preZone1");
+        //if (game.global.world == 1) doTKJobs("preZone1");
         f(...args); // Trimps drawGrid being run
-        // Do these things after the trapped function runs
-        //console.log("After invocation");
         doTKJobs("grid");
       }
     });
   }
 
+  //buildMapGrid
   drawGrid = newGridTrap(drawGrid);
 
-  // if a new grid is drawn Taskimp haz gotz work to dooz
+  // if Load of Save
   function loadGameTrap(f) {
     return new Proxy(f, {
       apply(target, thisArg, args) {
-        // Do these things before the trapped function runs
-        //console.log("Before invocation");
         f(...args); // Loading Game
-        // Do these things after the trapped function runs
-        //console.log("After invocation");
-        doTKJobs("preZone1");
+        setTimeout(doTKJobs("preZone1"), 15000);
+        //doTKJobs("preZone1");
         doTKJobs("zone");
-        message("Whew Baby, Taskimp is online!", "Notices", "user");
+        message("Whoo Baby, Taskimp is online!", "Notices", "user");
       }
     });
   }
 
-  load = loadGameTrap(load);
+  //load = loadGameTrap(load);
 
-  // if a map fails to buy Taskimp haz gotz work to dooz
+  // if a map fails to buy
   function mAZTrap(f) {
     return new Proxy(f, {
       apply(target, thisArg, args) {
-        // Do these things before the trapped function runs
-        //console.log("Before invocation");
         f(...args); // Map At Zone being attempted
-        // Do these things after the trapped function runs
-        //console.log("After invocation");
-        if (updateMapCost(true) > game.resources.fragments.owned &&
-            game.global.preMapsActive &&
-            game.jobs.Explorer.owned > 0) {
+        if (updateMapCost(true) > game.resources.fragments.owned
+            && game.global.preMapsActive && game.jobs.Explorer.owned > 0) {
           message("My, my, not enough fragments... yet. Don't worry Taskimp has got this!", "Loot", "user");
           doTKJobs("mapAtZone");
         }
@@ -929,23 +1633,23 @@
     });
   }
 
-  //preMapsActive == true == Map Chamber?? mapsSwitch main line 9700
+  //preMapsActive == true is Map Chamber mapsSwitch main line 9700
   //gg.mapGridArray.length === 0 && gg.mapsActive
   //checkMapAtZoneWorld = mAZTrap(checkMapAtZoneWorld);
   runMapAtZone = mAZTrap(runMapAtZone);
 
-  // if a map fails to buy Taskimp haz gotz work to dooz
+  // if game in a new cell
   function cellTrap(f) {
     return new Proxy(f, {
       apply(target, thisArg, args) {
-        // Do these things before the trapped function runs
         //console.log("Before invocation");
-        f(...args); // Map At Zone being attempted
-        // Do these things after the trapped function runs
+        //doTKJobs("precell");
+        f(...args); // Processing new cell
         //console.log("After invocation");
         doTKJobs("cell");
         if (game.global.mapsActive) {
           doTKJobs("bw");
+          //doTKJobs("nature");
         }
       }
     });
@@ -954,20 +1658,36 @@
   //getNextBwId = mBWTrap(getNextBwId);
   fight = cellTrap(fight);
 
-  // if a map fails to buy Taskimp haz gotz work to dooz
+  // if resources awarded
+  function payDay(f) {
+    return new Proxy(f, {
+      apply(target, thisArg, args) {
+        //console.log("Before invocation");
+        f(...args); // Processing new cell
+        //console.log("After invocation");
+        doTKJobs("buy");
+      }
+    });
+  }
+
+  rewardResource = payDay(rewardResource);
+
+  // if manage Nature
   function windTrap(f) {
     return new Proxy(f, {
       apply(target, thisArg, args) {
         f(...args); // Run the trapped function
+        //if (game.global.uberNature == "Wind") doTKJobs("nature");
         doTKJobs("nature");
       }
     });
   }
 
   // naturePurchase seems to be called by more than just the button
+  // doesn't seem to trap right, needs more testing at minimum
   //naturePurchase = windTrap(naturePurchase);
 
-  message("Whew Baby, Taskimp is online!", "Notices", "user");
+  message("Whoo Baby, Taskimp is online!", "Notices", "user");
 
   // Replacement functions for Trimps
 
