@@ -728,8 +728,8 @@
         (isImpExotic(imp)) ? "Exotic" :
         (imp.toLowerCase().indexOf("turk") > -1) ? "Turk":
         (imp.toLowerCase().indexOf("hulk") > -1) ? "Hulk" :
-        (imp.toLowerCase().indexOf("skele") > -1) ? "Skele":
         (imp.toLowerCase().indexOf("megaskele") > -1) ? "MSkele" :
+        (imp.toLowerCase().indexOf("skele") > -1) ? "Skele":
         (imp.toLowerCase().indexOf("presi") > -1) ? "Pres" :
         (imp.toLowerCase().indexOf("voidsnimp") > -1) ? "VSnimp" :
         (isImpFast(imp)) ? "Fast" :
@@ -768,7 +768,7 @@
       var glyphData = {"Fast":["glyphicon-forward", "Maroon", "small"],
                        "Turk":["icon-spoon-knife", "SaddleBrown", "small"],
                        "Skele":["glyphicon-italic", "Goldenrod", "small"],
-                       "MSkele":["glyphicon-italic", "DarkGoldenrod", "small"],
+                       "MSkele":["glyphicon-bold", "DarkGoldenrod", "small"],
                        "Exotic":["glyphicon-sunglasses", "DarkOrange", "small"],
                        "VSnimp":["glyphicon-fast-forward", "Magenta", "small"],
                        "Pres":["icon-gift", "DeepSkyBlue", "small"],
