@@ -1,6 +1,11 @@
 # Taskimp
 Trimps automation not available in AutoTrimps, built from the ground up.
 
+# Menu
+This adds a tab at the bottom next to the "Settings" tab to open and close the Taskimp menu 
+
+# Core
+Core functionality of the Taskimp helper 
 
 # Internal Use only
 taskVerse - the universe tab/button/whatever setting identifying the Taskimp settings universe
